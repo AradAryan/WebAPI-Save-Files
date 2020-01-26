@@ -4,55 +4,45 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace WebAPI_Save_Files.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        static string path = @"C:\Users\faranam\Desktop\OutputFiles";
 
         // POST api/values
         [HttpPost]
-        public string Post(string value)
+        public string Post()
         {
-            if (Request.Headers.Contains("arad"))
+            
+            foreach (var item in Request.Content.Headers)
             {
-                StreamWriter sw = new StreamWriter(@"C:\Users\faranam\Desktop\Context.txt");
-                sw.Write(value);
-                sw.Close();
-                return "Jobs Done!";
+
+                //ActionContext.ControllerContext.RequestContext;
+                var filePath = $"{path}\\{item}";
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                if (File.Exists(filePath))
+                {
+                    return "File Already Exists!";
+                }
+
+                else
+                {
+                    File.Create(filePath);
+                    Request.GetRequestContext();
+                    File.WriteAllText(filePath, Request.Content.Headers.GetValues("").First());
+                    return "File has been Created!";
+                }
             }
-            else
-                return "File is not Valid";
-
-            /*var checksum = Request.Headers;
-
-             if (checksum.Contains("Custom"))
-             {
-                 string token = checksum.GetValues("Custom").First();
-             }
-             */
-        }
-
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            return "";
         }
     }
 }
