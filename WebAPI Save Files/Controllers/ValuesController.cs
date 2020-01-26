@@ -20,7 +20,6 @@ namespace WebAPI_Save_Files.Controllers
             
             foreach (var item in Request.Content.Headers)
             {
-
                 //ActionContext.ControllerContext.RequestContext;
                 var filePath = $"{path}\\{item}";
 
