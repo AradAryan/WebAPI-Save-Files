@@ -17,27 +17,40 @@ namespace WebAPI_Save_Files.Controllers
 {
     public class ValuesController : ApiController
     {
-        static string path = @"C:\Users\faranam\Desktop\OutputFiles";
+        /// <summary>
+        /// 
+        /// </summary>
+        static string path =
+            @"C:\Users\faranam\Desktop\OutputFiles";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public HttpResponseMessage Post()
         {
-            string root = HttpContext.Current.Server.MapPath("~/App_Data");
-            var provider = new MultipartFormDataStreamProvider(root);
+            string root =
+                HttpContext.Current.Server.MapPath("~/App_Data");
+
+            var provider =
+                new MultipartFormDataStreamProvider(root);
+
             bool error = false;
             try
             {
-                var contents = Request.Content.ReadAsMultipartAsync(provider).Result;
+                var contents =
+                    Request.Content.ReadAsMultipartAsync(provider).Result;
+
                 foreach (var item in contents.Contents.ToArray())
                 {
-                    var filePath = $"{path}\\{ item.Headers.First().Value.First()}";
-
+                    var filePath =
+                        $"{path}\\{ item.Headers.First().Value.First()}";
 
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
-
                     if (File.Exists(filePath))
                     {
                         error = true;
@@ -49,17 +62,20 @@ namespace WebAPI_Save_Files.Controllers
                         {
                             ///Release Pointer
                         }
-                        File.WriteAllBytes(filePath, item.ReadAsByteArrayAsync().Result);
+                        File.WriteAllBytes(filePath,
+                            item.ReadAsByteArrayAsync().Result);
                     }
                 }
                 if (error)
-                    return Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Wrong Checksum");
+                    return Request.CreateErrorResponse
+                        (HttpStatusCode.Forbidden, "Wrong Checksum");
                 else
                     return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e);
+                return Request.CreateErrorResponse
+                    (HttpStatusCode.InternalServerError, e);
             }
         }
     }
