@@ -1,30 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Hosting;
+using System.Linq;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace WebAPI_Save_Files.Controllers
 {
     public class ValuesController : ApiController
     {
+        #region Fields
         /// <summary>
-        /// 
+        /// Output Path
         /// </summary>
         static string path =
             @"C:\Users\faranam\Desktop\OutputFiles";
+        #endregion
 
+        #region POST
         /// <summary>
-        /// 
+        /// POST Function
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -78,6 +74,7 @@ namespace WebAPI_Save_Files.Controllers
                     (HttpStatusCode.InternalServerError, e);
             }
         }
+        #endregion 
     }
 }
 
